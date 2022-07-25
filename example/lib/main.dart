@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    instantiator.fetchInstance<Repository>();
+    instantiator.fetchSingletonInstance<Repository>();
     super.initState();
   }
 

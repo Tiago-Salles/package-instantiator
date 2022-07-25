@@ -1,5 +1,7 @@
 library instantiator;
 
+import 'package:instantiator/exceptions/package_exceptions.dart';
+
 export '';
 
 typedef InstanceCreator<T extends Object> = T Function();
@@ -17,17 +19,17 @@ class Instantiator {
     }
   }
 
-  T fetchInstance<T extends Object>([InstanceCreator<T>? instanceCreator]) {
+  T fetchSingletonInstance<T extends Object>() {
     final Object? instance;
-    if (instanceCreator == null) {
-      instance = appInstances.values.whereType<T>();
-    } else {
-      instance = instanceCreator();
-    }
+    instance = appInstances.values.whereType<T>();
 
     return instance is T
         ? instance
-        : throw Exception(
-            "ERROR ==> The instance of ${T.toString()} was not found, if you are trying to fetch a Singleton instance you need to register before");
+        : throw Exception(AppExceptions.instanceNotFound<T>());
+  }
+
+  Object fetchFactoryInstance(InstanceCreator instanceCreator) {
+    Object instance = instanceCreator();
+    return instance;
   }
 }
